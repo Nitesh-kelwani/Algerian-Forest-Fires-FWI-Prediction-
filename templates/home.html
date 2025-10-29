@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forest Fire Prediction</title>
+    <!-- We'll load Tailwind CSS to make it look a bit more modern -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900">
+
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-2xl w-full max-w-md">
+            
+            <h1 class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">
+                FWI Prediction
+            </h1>
+
+            <!-- 
+              This form now sends data to the '/predict' route,
+              which we will link to our 'predict_datapoint' function.
+            -->
+            <form action="/predictdata" method="POST" class="space-y-4">
+                
+                <!-- 
+                  This layout uses a grid for better alignment.
+                  We have 9 total features now.
+                -->
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" name="Temperature" placeholder="Temperature" required="required"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                    <input type="text" name="RH" placeholder="Relative Humidity" required="required"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                    <input type="text" name="Ws" placeholder="Wind Speed" required="required"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                    <input type="text" name="Rain" placeholder="Rain" required="required"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                    <input type="text" name="FFMC" placeholder="FFMC" required="required"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                    <input type="text" name="DMC" placeholder="DMC" required="required"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                    <input type="text" name="ISI" placeholder="ISI" required="required"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                    
+                    <!-- 
+                      This input for "Region" assumes a number (e.g., 0 or 1).
+                      If your model expects text, this will need to be changed.
+                    -->
+                    <select name="Region" required="required"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">Select Region</option>
+                        <option value="0">Bejaia</option>
+                        <option value="1">Sidi-Bel Abbes</option>
+                    </select>
+                </div>
+
+                <!-- This is the 9th feature -->
+                <select name="Classes" required="required"
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="">Select Fire Status</option>
+                    <option value="1">Fire</option>
+                    <option value="0">Not Fire</option>
+                </select>
+
+                <!-- Submit Button -->
+                <button type="submit"
+                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                    Predict FWI
+                </button>
+            </form>
+
+            <!-- 
+              Display area for the result.
+              Matches the '{{ result }}' in your HTML.
+            -->
+            {% if result %}
+            <div class="mt-6 text-center">
+                <h2 class="text-2xl font-semibold text-red-600 dark:text-red-400">
+                    The FWI prediction is {{ result }}
+                </h2>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+</body>
+</html>
+
+
